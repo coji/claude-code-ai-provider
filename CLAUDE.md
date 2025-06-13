@@ -35,10 +35,24 @@ This is a TypeScript library project for building a Claude Code AI provider. The
 - `dist/` - Built output (ESM + type declarations)
 - Currently minimal structure with single entry point
 
-## Development Notes
+## Implementation Details
 
-- This project is in early development stages
-- No TypeScript configuration file exists yet - may need to be created
-- Test framework not yet implemented
-- Uses modern ES modules output format
-- Reference code will be placed in the `z/` directory for implementation guidance
+### Architecture
+- **ClaudeCodeProcess**: Manages CLI process execution and communication
+- **ClaudeCodeLanguageModel**: Implements LanguageModelV1 interface
+- **ClaudeCodeProvider**: Factory for creating model instances
+- **Message Conversion**: Converts between Vercel AI SDK and Claude Code formats
+
+### Key Features Implemented
+- Non-streaming and streaming text generation
+- Claude Code CLI process management
+- Session management for multi-turn conversations
+- Tool configuration and permission management
+- MCP (Model Context Protocol) integration
+- Comprehensive error handling
+
+### Development Notes
+- Reference code available in `z/` directory
+- Follows qwen-ai-provider patterns for community provider structure
+- Uses modern ES modules with TypeScript declarations
+- Supports all Claude Code CLI features through configuration
