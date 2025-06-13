@@ -55,6 +55,7 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
     options: LanguageModelV1CallOptions,
   ): Promise<Awaited<ReturnType<LanguageModelV1['doGenerate']>>> {
     const { prompt, abortSignal, mode } = options
+    // @ts-ignore mode is deprecated but still needed for object generation
     const warnings: LanguageModelV1CallWarning[] = []
 
     try {
@@ -63,9 +64,11 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
 
       // Handle object generation mode
       if (mode?.type === 'object-json' || mode?.type === 'object-tool') {
-        const schema = mode.type === 'object-json' ? mode.schema : mode.tool.parameters
+        const schema =
+          mode.type === 'object-json' ? mode.schema : mode.tool.parameters
         claudeCodePrompt += `\n\nIMPORTANT: Respond with valid JSON that matches this schema:\n${JSON.stringify(schema, null, 2)}`
-        claudeCodePrompt += '\n\nYour response should be ONLY the JSON object, without any additional text or formatting.'
+        claudeCodePrompt +=
+          '\n\nYour response should be ONLY the JSON object, without any additional text or formatting.'
       }
 
       // Prepare process options
@@ -122,13 +125,13 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
           // Try to parse the response as JSON
           const cleanedText = text.trim()
           let jsonText = cleanedText
-          
+
           // Extract JSON if it's wrapped in code blocks
           const jsonMatch = cleanedText.match(/```(?:json)?\s*([\s\S]*?)\s*```/)
           if (jsonMatch) {
             jsonText = jsonMatch[1]?.trim() || cleanedText
           }
-          
+
           responseObject = JSON.parse(jsonText)
         } catch (parseError) {
           // If JSON parsing fails, treat as regular text response
@@ -169,7 +172,7 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
           }),
         },
       }
-      
+
       return response
     } catch (error) {
       if (isClaudeCodeError(error)) {
@@ -193,6 +196,7 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
     options: LanguageModelV1CallOptions,
   ): Promise<Awaited<ReturnType<LanguageModelV1['doStream']>>> {
     const { prompt, abortSignal, mode } = options
+    // @ts-ignore mode is deprecated but still needed for object generation
     const warnings: LanguageModelV1CallWarning[] = []
 
     try {
@@ -201,9 +205,11 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
 
       // Handle object generation mode
       if (mode?.type === 'object-json' || mode?.type === 'object-tool') {
-        const schema = mode.type === 'object-json' ? mode.schema : mode.tool.parameters
-        claudeCodePrompt += '\n\nIMPORTANT: Respond with valid JSON that matches this schema:\n' + JSON.stringify(schema, null, 2)
-        claudeCodePrompt += '\n\nYour response should be ONLY the JSON object, without any additional text or formatting.'
+        const schema =
+          mode.type === 'object-json' ? mode.schema : mode.tool.parameters
+        claudeCodePrompt += `\n\nIMPORTANT: Respond with valid JSON that matches this schema:\n${JSON.stringify(schema, null, 2)}`
+        claudeCodePrompt +=
+          '\n\nYour response should be ONLY the JSON object, without any additional text or formatting.'
       }
 
       // Prepare process options
