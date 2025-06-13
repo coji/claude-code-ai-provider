@@ -1,55 +1,56 @@
 {
-	"name": "claude-code-ai-provider",
-	"version": "0.1.0",
-	"description": "Vercel AI Provider for Claude Code CLI integration",
-	"main": "./dist/index.js",
-	"module": "./dist/index.mjs",
-	"types": "./dist/index.d.ts",
-	"files": ["dist/**/*"],
-	"keywords": [
-		"claude",
-		"claude-code",
-		"ai",
-		"provider",
-		"vercel-ai",
-		"ai-sdk",
-		"cli"
-	],
-	"author": "coji",
-	"license": "MIT",
-	"packageManager": "pnpm@10.11.0",
-	"engines": {
-		"node": ">=18.0.0"
-	},
-	"scripts": {
-		"build": "tsup src/index.ts --format esm,cjs --dts --out-dir dist",
-		"dev": "tsup src/index.ts --format esm,cjs --dts --out-dir dist --watch",
-		"lint": "biome check",
-		"format": "biome format",
-		"prettier": "prettier --write .",
-		"prettier:check": "prettier --check .",
-		"test": "vitest run",
-		"test:ci": "vitest --run",
-		"test:watch": "vitest",
-		"type-check": "tsc --noEmit",
-		"clean": "rm -rf dist"
-	},
-	"peerDependencies": {
-		"zod": "^3.24.1"
-	},
-	"dependencies": {
-		"@ai-sdk/provider": "^1.0.7",
-		"@ai-sdk/provider-utils": "^2.1.6"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
-		"@types/node": "^22.13.1",
-		"@vitest/ui": "^3.0.5",
-		"prettier": "3.5.3",
-		"prettier-plugin-organize-imports": "4.1.0",
-		"tsup": "8.5.0",
-		"typescript": "5.8.3",
-		"vitest": "^3.0.5",
-		"zod": "^3.24.1"
-	}
+  "name": "claude-code-ai-provider",
+  "version": "0.1.0",
+  "description": "Vercel AI Provider for Claude Code CLI integration",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "keywords": [
+    "claude",
+    "claude-code",
+    "ai",
+    "provider",
+    "vercel-ai",
+    "ai-sdk",
+    "cli"
+  ],
+  "author": "coji",
+  "license": "MIT",
+  "packageManager": "pnpm@10.11.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "biome check",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "test": "vitest run",
+    "test:ci": "vitest --run",
+    "test:watch": "vitest",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "peerDependencies": {
+    "zod": "^3.24.1"
+  },
+  "dependencies": {
+    "@ai-sdk/provider": "^1.0.7",
+    "@ai-sdk/provider-utils": "^2.1.6"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/node": "^22.13.1",
+    "@vitest/ui": "^3.0.5",
+    "prettier": "3.5.3",
+    "prettier-plugin-organize-imports": "4.1.0",
+    "tsup": "8.5.0",
+    "typescript": "5.8.3",
+    "vitest": "^3.0.5",
+    "zod": "^3.24.1"
+  }
 }
