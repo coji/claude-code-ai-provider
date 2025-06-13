@@ -1,0 +1,25 @@
+{
+  "name": "claude-code-ai-provider",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --out-dir dist",
+    "lint": "biome check",
+    "format": "biome format",
+    "prettier": "prettier --write .",
+    "prettier:check": "prettier --check .",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.11.0",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "prettier": "3.5.3",
+    "prettier-plugin-organize-imports": "4.1.0",
+    "tsup": "8.5.0",
+    "typescript": "5.8.3"
+  }
+}
