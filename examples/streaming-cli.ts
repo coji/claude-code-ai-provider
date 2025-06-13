@@ -14,9 +14,8 @@ async function main(): Promise<void> {
     console.log('🤖 Streaming from Claude Code...\n')
 
     const { textStream } = await streamText({
-      model: claudeCode('claude-3-5-sonnet-20241022', {
+      model: claudeCode('sonnet', {
         maxTurns: 5,
-        sessionId: 'streaming-session',
       }),
       prompt,
     })
@@ -27,7 +26,7 @@ async function main(): Promise<void> {
     }
     console.log('\n')
   } catch (error) {
-    console.error('❌ Error:', (error as Error).message)
+    console.error('❌ Error:', error)
     process.exit(1)
   }
 }

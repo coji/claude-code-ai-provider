@@ -15,9 +15,8 @@ async function main(): Promise<void> {
     console.log('🤖 Calling Claude Code...\n')
 
     const { text } = await generateText({
-      model: claudeCode('claude-3-5-sonnet-20241022', {
+      model: claudeCode('sonnet', {
         maxTurns: 3,
-        sessionId: 'example-session',
       }),
       prompt,
     })
@@ -25,7 +24,7 @@ async function main(): Promise<void> {
     console.log('📝 Response:')
     console.log(text)
   } catch (error) {
-    console.error('❌ Error:', (error as Error).message)
+    console.error('❌ Error:', error)
     process.exit(1)
   }
 }

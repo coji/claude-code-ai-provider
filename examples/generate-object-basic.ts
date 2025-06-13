@@ -35,7 +35,7 @@ async function main(): Promise<void> {
     console.log('📊 Usage:', result.usage)
     console.log('🏁 Finish reason:', result.finishReason)
   } catch (error) {
-    console.error('❌ Error:', (error as Error).message)
+    console.error('❌ Error:', error)
     process.exit(1)
   }
 }

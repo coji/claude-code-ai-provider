@@ -61,7 +61,7 @@ async function main(): Promise<void> {
 
     console.log('\n🎉 Story outline generation complete!')
   } catch (error) {
-    console.error('❌ Error:', (error as Error).message)
+    console.error('❌ Error:', error)
     process.exit(1)
   }
 }

@@ -68,7 +68,7 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
           mode.type === 'object-json' ? mode.schema : mode.tool.parameters
         claudeCodePrompt += `\n\nIMPORTANT: Respond with valid JSON that matches this schema:\n${JSON.stringify(schema, null, 2)}`
         claudeCodePrompt +=
-          '\n\nYour response should be ONLY the JSON object, without any additional text or formatting.'
+          '\n\nYour response should be ONLY the JSON object, without any additional text, code blocks, or formatting. Do not wrap it in ```json``` blocks.'
       }
 
       // Prepare process options
@@ -115,7 +115,39 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
         )
       }
 
-      const text = finalMessage.result
+      // Get text from the last assistant message instead of result.result
+      const assistantMessages = result.messages.filter(
+        (msg) => msg.type === 'assistant',
+      )
+      const lastAssistantMessage =
+        assistantMessages[assistantMessages.length - 1]
+
+      let text = finalMessage.result || ''
+      if (
+        lastAssistantMessage &&
+        typeof lastAssistantMessage.message === 'string'
+      ) {
+        text = lastAssistantMessage.message
+      } else if (lastAssistantMessage?.message) {
+        // Handle Claude Code message format (content array)
+        try {
+          const messageObj =
+            typeof lastAssistantMessage.message === 'string'
+              ? JSON.parse(lastAssistantMessage.message)
+              : lastAssistantMessage.message
+
+          if (messageObj.content && Array.isArray(messageObj.content)) {
+            const textContent = messageObj.content.find(
+              (c: any) => c.type === 'text',
+            )
+            if (textContent?.text) {
+              text = textContent.text
+            }
+          }
+        } catch (e) {
+          // Fallback to result.result or empty string
+        }
+      }
       const finishReason = this.mapFinishReason('success')
 
       // Handle object generation response
@@ -209,7 +241,7 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
           mode.type === 'object-json' ? mode.schema : mode.tool.parameters
         claudeCodePrompt += `\n\nIMPORTANT: Respond with valid JSON that matches this schema:\n${JSON.stringify(schema, null, 2)}`
         claudeCodePrompt +=
-          '\n\nYour response should be ONLY the JSON object, without any additional text or formatting.'
+          '\n\nYour response should be ONLY the JSON object, without any additional text, code blocks, or formatting. Do not wrap it in ```json``` blocks.'
       }
 
       // Prepare process options
