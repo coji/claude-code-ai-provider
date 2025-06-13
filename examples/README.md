@@ -1,6 +1,6 @@
-# Examples
+# Claude Code AI Provider Examples
 
-Simple CLI examples showing how to use the Claude Code AI Provider.
+This directory contains TypeScript examples demonstrating how to use the Claude Code AI Provider with the Vercel AI SDK.
 
 ## Setup
 
@@ -16,36 +16,67 @@ Simple CLI examples showing how to use the Claude Code AI Provider.
    pnpm install
    ```
 
-## Usage
+## Available Examples
 
-### Simple Text Generation
+### Basic Text Generation
 
-```bash
-# Default prompt
-pnpm run simple
+- **`simple-cli.ts`** - Basic text generation with Claude Code
+- **`streaming-cli.ts`** - Streaming text responses
 
-# Custom prompt
-pnpm run simple "Help me write a TypeScript function"
-```
+### Structured Object Generation
 
-### Streaming Text Generation
+- **`generate-object-basic.ts`** - Simple structured output (recipe generation)
+- **`generate-object-complex.ts`** - Complex nested schemas (project configuration)
+- **`generate-object-streaming.ts`** - Streaming object generation with real-time updates
 
-```bash
-# Default prompt
-pnpm run streaming
-
-# Custom prompt
-pnpm run streaming "Create a React component with TypeScript"
-```
-
-### Direct Node.js
+## Running Examples
 
 ```bash
-node simple-cli.js "What files are in this directory?"
-node streaming-cli.js "Explain this code and suggest improvements"
+# Basic text generation
+pnpm simple "Write a hello world function"
+
+# Streaming text
+pnpm streaming "Explain async/await in JavaScript"
+
+# Basic object generation
+pnpm generate-basic
+
+# Complex object generation
+pnpm generate-complex
+
+# Streaming object generation
+pnpm generate-streaming
 ```
 
-## Examples
+## Example Features
 
-- `simple-cli.js` - Basic text generation
-- `streaming-cli.js` - Streaming text generation with real-time output
+### Text Generation
+
+- Basic text generation with configurable Claude Code settings
+- Real-time streaming responses
+- Error handling and session management
+
+### Structured Output
+
+- Type-safe object generation using Zod schemas
+- Complex nested data structures
+- Real-time streaming object generation with partial updates
+- Usage tracking and finish reason reporting
+
+## TypeScript Features
+
+- Full type safety with TypeScript
+- Proper error handling with typed exceptions
+- ESM-compatible imports
+- Direct execution with `tsx` for development
+
+## Configuration
+
+Examples demonstrate various Claude Code configuration options:
+
+- Session management
+- Tool restrictions
+- Turn limits
+- Model selection
+
+See individual example files for specific configuration patterns.

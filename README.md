@@ -293,21 +293,27 @@ const claudeCode = createClaudeCode({
 
 ## Examples
 
-The `examples/` directory contains complete working examples:
+The `examples/` directory contains complete TypeScript examples:
 
-- **`simple-cli.js`** - Basic text generation
-- **`streaming-cli.js`** - Streaming responses
-- **`generate-object-basic.js`** - Simple structured output (recipe)
-- **`generate-object-complex.js`** - Complex nested schemas (project config)
-- **`generate-object-streaming.js`** - Story generation with complex structure
+### Text Generation
+- **`simple-cli.ts`** - Basic text generation with configuration
+- **`streaming-cli.ts`** - Real-time streaming responses
+
+### Structured Output  
+- **`generate-object-basic.ts`** - Simple structured output (recipe)
+- **`generate-object-complex.ts`** - Complex nested schemas (project config)
+- **`generate-object-streaming.ts`** - Streaming object generation
 
 Run examples:
 
 ```bash
 cd examples
-node simple-cli.js "Write a hello world function"
-node streaming-cli.js "Explain async/await"
-node generate-object-basic.js
+pnpm install
+
+# Run TypeScript examples directly
+pnpm simple "Write a hello world function"
+pnpm streaming "Explain async/await"
+pnpm generate-basic
 ```
 
 ## Error Handling

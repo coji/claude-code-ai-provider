@@ -7,11 +7,15 @@
     "ai": "^4.0.0",
     "zod": "^3.24.1"
   },
+  "devDependencies": {
+    "tsx": "^4.16.2",
+    "@types/node": "^22.13.1"
+  },
   "scripts": {
-    "simple": "node simple-cli.js",
-    "streaming": "node streaming-cli.js",
-    "generate-basic": "node generate-object-basic.js",
-    "generate-complex": "node generate-object-complex.js",
-    "generate-streaming": "node generate-object-streaming.js"
+    "simple": "npx tsx simple-cli.ts",
+    "streaming": "npx tsx streaming-cli.ts",
+    "generate-basic": "npx tsx generate-object-basic.ts",
+    "generate-complex": "npx tsx generate-object-complex.ts",
+    "generate-streaming": "npx tsx generate-object-streaming.ts"
   }
 }

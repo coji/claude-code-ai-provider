@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 
 import { generateObject } from 'ai'
 import { z } from 'zod'
@@ -6,7 +6,7 @@ import { createClaudeCode } from '../dist/index.js'
 
 const claudeCode = createClaudeCode()
 
-async function main() {
+async function main(): Promise<void> {
   try {
     console.log('🤖 Generating complex structured object with Claude Code...\n')
 
@@ -67,9 +67,12 @@ async function main() {
     console.log('📊 Usage:', result.usage)
     console.log('🏁 Finish reason:', result.finishReason)
   } catch (error) {
-    console.error('❌ Error:', error.message)
+    console.error('❌ Error:', (error as Error).message)
     process.exit(1)
   }
 }
 
-main()
+main().catch((error) => {
+  console.error('❌ Unhandled error:', error)
+  process.exit(1)
+})

@@ -1,22 +1,23 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 
 import { streamText } from 'ai'
 import { createClaudeCode } from '../dist/index.js'
 
 const claudeCode = createClaudeCode({
-  maxTurns: 5,
   allowedTools: ['Read', 'Write', 'Bash', 'Edit'],
-  sessionId: 'streaming-session',
 })
 
-async function main() {
+async function main(): Promise<void> {
   const prompt = process.argv[2] || 'Write a simple Python hello world script'
 
   try {
     console.log('🤖 Streaming from Claude Code...\n')
 
     const { textStream } = await streamText({
-      model: claudeCode('claude-3-5-sonnet-20241022'),
+      model: claudeCode('claude-3-5-sonnet-20241022', {
+        maxTurns: 5,
+        sessionId: 'streaming-session',
+      }),
       prompt,
     })
 
@@ -26,9 +27,12 @@ async function main() {
     }
     console.log('\n')
   } catch (error) {
-    console.error('❌ Error:', error.message)
+    console.error('❌ Error:', (error as Error).message)
     process.exit(1)
   }
 }
 
-main()
+main().catch((error) => {
+  console.error('❌ Unhandled error:', error)
+  process.exit(1)
+})
