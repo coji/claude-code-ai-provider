@@ -1,0 +1,12 @@
+{
+  "name": "claude-code-ai-provider-examples",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "ai": "^4.0.0"
+  },
+  "scripts": {
+    "simple": "node simple-cli.js",
+    "streaming": "node streaming-cli.js"
+  }
+}

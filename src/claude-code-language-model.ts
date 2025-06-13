@@ -33,7 +33,7 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
   readonly modelId: ClaudeCodeModelId
   readonly settings: ClaudeCodeSettings
   readonly defaultObjectGenerationMode: 'json' | 'tool' | undefined
-  readonly supportsStructuredOutputs: boolean = false
+  readonly supportsStructuredOutputs: boolean = true
   readonly supportsImageUrls: boolean = true
 
   constructor(
@@ -54,14 +54,19 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
   async doGenerate(
     options: LanguageModelV1CallOptions,
   ): Promise<Awaited<ReturnType<LanguageModelV1['doGenerate']>>> {
-    const { prompt, abortSignal } = options
+    const { prompt, abortSignal, mode } = options
     const warnings: LanguageModelV1CallWarning[] = []
-
-    // TODO: Implement object generation modes
 
     try {
       // Convert prompt to Claude Code format
-      const claudeCodePrompt = convertToClaudeCodePrompt(prompt)
+      let claudeCodePrompt = convertToClaudeCodePrompt(prompt)
+
+      // Handle object generation mode
+      if (mode?.type === 'object-json' || mode?.type === 'object-tool') {
+        const schema = mode.type === 'object-json' ? mode.schema : mode.tool.parameters
+        claudeCodePrompt += `\n\nIMPORTANT: Respond with valid JSON that matches this schema:\n${JSON.stringify(schema, null, 2)}`
+        claudeCodePrompt += '\n\nYour response should be ONLY the JSON object, without any additional text or formatting.'
+      }
 
       // Prepare process options
       const processOptions = this.buildProcessOptions(claudeCodePrompt, options)
@@ -110,9 +115,34 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
       const text = finalMessage.result
       const finishReason = this.mapFinishReason('success')
 
-      return {
+      // Handle object generation response
+      let responseObject = undefined
+      if (mode?.type === 'object-json' || mode?.type === 'object-tool') {
+        try {
+          // Try to parse the response as JSON
+          const cleanedText = text.trim()
+          let jsonText = cleanedText
+          
+          // Extract JSON if it's wrapped in code blocks
+          const jsonMatch = cleanedText.match(/```(?:json)?\s*([\s\S]*?)\s*```/)
+          if (jsonMatch) {
+            jsonText = jsonMatch[1]?.trim() || cleanedText
+          }
+          
+          responseObject = JSON.parse(jsonText)
+        } catch (parseError) {
+          // If JSON parsing fails, treat as regular text response
+          warnings.push({
+            type: 'other' as const,
+            message: `Failed to parse JSON response: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`,
+          })
+        }
+      }
+
+      const response = {
         text,
         finishReason,
+        ...(responseObject && { object: responseObject }),
         usage: {
           promptTokens: Number.NaN, // Claude Code doesn't provide detailed token counts
           completionTokens: Number.NaN,
@@ -139,6 +169,8 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
           }),
         },
       }
+      
+      return response
     } catch (error) {
       if (isClaudeCodeError(error)) {
         throw error
@@ -160,14 +192,19 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
   async doStream(
     options: LanguageModelV1CallOptions,
   ): Promise<Awaited<ReturnType<LanguageModelV1['doStream']>>> {
-    const { prompt, abortSignal } = options
+    const { prompt, abortSignal, mode } = options
     const warnings: LanguageModelV1CallWarning[] = []
-
-    // TODO: Implement object generation modes
 
     try {
       // Convert prompt to Claude Code format
-      const claudeCodePrompt = convertToClaudeCodePrompt(prompt)
+      let claudeCodePrompt = convertToClaudeCodePrompt(prompt)
+
+      // Handle object generation mode
+      if (mode?.type === 'object-json' || mode?.type === 'object-tool') {
+        const schema = mode.type === 'object-json' ? mode.schema : mode.tool.parameters
+        claudeCodePrompt += '\n\nIMPORTANT: Respond with valid JSON that matches this schema:\n' + JSON.stringify(schema, null, 2)
+        claudeCodePrompt += '\n\nYour response should be ONLY the JSON object, without any additional text or formatting.'
+      }
 
       // Prepare process options
       const processOptions = this.buildProcessOptions(claudeCodePrompt, options)
@@ -367,7 +404,7 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
     // Build options object
     const processOptions = {
       prompt,
-      outputFormat: 'json' as const,
+      outputFormat: 'text' as const,
       args,
       verbose: this.settings.verbose ?? false,
     }

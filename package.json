@@ -6,7 +6,8 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "examples/**/*"
   ],
   "keywords": [
     "claude",
@@ -46,6 +47,7 @@
     "@biomejs/biome": "1.9.4",
     "@types/node": "^22.13.1",
     "@vitest/ui": "^3.0.5",
+    "ai": "4.3.16",
     "prettier": "3.5.3",
     "prettier-plugin-organize-imports": "4.1.0",
     "tsup": "8.5.0",

@@ -66,9 +66,8 @@ export class ClaudeCodeProcess {
         }
       }, this.options.timeout)
 
-      // Send prompt to stdin
+      // Close stdin since we're passing prompt as argument
       if (this.process.stdin) {
-        this.process.stdin.write(this.options.prompt)
         this.process.stdin.end()
       }
 
@@ -198,9 +197,8 @@ export class ClaudeCodeProcess {
       )
     }
 
-    // Send prompt to stdin
+    // Close stdin since we're passing prompt as argument
     if (this.process.stdin) {
-      this.process.stdin.write(this.options.prompt)
       this.process.stdin.end()
     }
 
@@ -265,6 +263,9 @@ export class ClaudeCodeProcess {
 
     // Custom arguments
     args.push(...this.options.args)
+
+    // Add prompt as last argument
+    args.push(this.options.prompt)
 
     return args
   }

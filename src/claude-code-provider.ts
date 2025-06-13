@@ -91,7 +91,8 @@ export function createClaudeCode(
 ): ClaudeCodeProvider {
   const config = {
     provider: 'claude-code',
-    supportsStructuredOutputs: false,
+    defaultObjectGenerationMode: 'json' as const,
+    supportsStructuredOutputs: true,
   }
 
   /**
