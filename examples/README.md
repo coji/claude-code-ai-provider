@@ -20,32 +20,32 @@ This directory contains TypeScript examples demonstrating how to use the Claude 
 
 ### Basic Text Generation
 
-- **`simple-cli.ts`** - Basic text generation with Claude Code
-- **`streaming-cli.ts`** - Streaming text responses
+- **`generate-text.ts`** - Basic text generation with Claude Code
+- **`stream-text.ts`** - Streaming text responses
 
 ### Structured Object Generation
 
-- **`generate-object-basic.ts`** - Simple structured output (recipe generation)
+- **`generate-object.ts`** - Simple structured output (recipe generation)
 - **`generate-object-complex.ts`** - Complex nested schemas (project configuration)
-- **`generate-object-streaming.ts`** - Streaming object generation with real-time updates
+- **`stream-object.ts`** - Streaming object generation with real-time updates
 
 ## Running Examples
 
 ```bash
 # Basic text generation
-pnpm simple "Write a hello world function"
+pnpm generate "Write a hello world function"
 
 # Streaming text
-pnpm streaming "Explain async/await in JavaScript"
+pnpm stream "Explain async/await in JavaScript"
 
 # Basic object generation
-pnpm generate-basic
+pnpm generate-object
 
 # Complex object generation
 pnpm generate-complex
 
 # Streaming object generation
-pnpm generate-streaming
+pnpm stream-object
 ```
 
 ## Example Features
