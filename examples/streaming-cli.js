@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { createClaudeCode } from '../dist/index.js'
 import { streamText } from 'ai'
+import { createClaudeCode } from '../dist/index.js'
 
 const claudeCode = createClaudeCode({
   maxTurns: 5,
@@ -14,7 +14,7 @@ async function main() {
 
   try {
     console.log('🤖 Streaming from Claude Code...\n')
-    
+
     const { textStream } = await streamText({
       model: claudeCode('claude-3-5-sonnet-20241022'),
       prompt,

@@ -1,37 +1,45 @@
 # Claude Code AI Provider
 
-A [Vercel AI SDK](https://github.com/vercel/ai) community provider for [Claude Code](https://claude.ai/code) CLI integration.
+A [Vercel AI SDK](https://github.com/vercel/ai) community provider for [Claude Code](https://claude.ai/code) integration using the official TypeScript SDK.
 
-This provider allows you to use Claude Code as a language model within the Vercel AI SDK ecosystem, enabling you to leverage Claude Code's powerful coding capabilities programmatically.
+This provider allows you to use Claude Code as a language model within the Vercel AI SDK ecosystem, powered by the official `@anthropic-ai/claude-code` TypeScript SDK for reliability and maintainability.
 
 ## Features
 
 - 🔌 **Vercel AI SDK Compatible**: Drop-in replacement for other AI providers
-- 🚀 **Claude Code Integration**: Direct integration with Claude Code CLI
+- 🚀 **Official SDK Integration**: Built on `@anthropic-ai/claude-code` TypeScript SDK
+- 📋 **Structured Output**: Generate type-safe JSON objects using schemas
 - 📺 **Streaming Support**: Real-time streaming responses
 - 🛠️ **Tool Support**: Access to Claude Code's powerful development tools
-- ⚙️ **Configurable**: Extensive configuration options for Claude Code CLI
-- 🔄 **Session Management**: Support for multi-turn conversations with session continuity
+- ⚙️ **Configurable**: Extensive configuration options
+- 🔄 **Session Management**: Support for multi-turn conversations
 
 ## Installation
 
 ```bash
-npm install claude-code-ai-provider
+npm install claude-code-ai-provider @anthropic-ai/claude-code
 # or
-pnpm add claude-code-ai-provider
+pnpm add claude-code-ai-provider @anthropic-ai/claude-code
 # or
-yarn add claude-code-ai-provider
+yarn add claude-code-ai-provider @anthropic-ai/claude-code
 ```
 
 ## Prerequisites
 
 - Claude Code CLI must be installed and available in your PATH
 - Valid Anthropic API key configured for Claude Code
+- Node.js 18+
 
 Install Claude Code CLI:
 
 ```bash
 npm install -g @anthropic-ai/claude-code
+```
+
+Configure your API key:
+
+```bash
+export ANTHROPIC_API_KEY=your-api-key
 ```
 
 ## Quick Start
@@ -45,7 +53,7 @@ import { generateText } from 'ai'
 const claudeCode = createClaudeCode()
 
 const { text } = await generateText({
-  model: claudeCode('claude-3-5-sonnet-20241022'),
+  model: claudeCode('sonnet'), // or 'opus', 'haiku'
   prompt: 'Write a function to calculate fibonacci numbers',
 })
 
@@ -61,12 +69,74 @@ import { streamText } from 'ai'
 const claudeCode = createClaudeCode()
 
 const { textStream } = await streamText({
-  model: claudeCode('claude-3-5-sonnet-20241022'),
+  model: claudeCode('sonnet'),
   prompt: 'Create a React component for a todo list',
 })
 
 for await (const delta of textStream) {
   process.stdout.write(delta)
+}
+```
+
+### Structured Output (Object Generation)
+
+```typescript
+import { generateObject } from 'ai'
+import { z } from 'zod'
+import { createClaudeCode } from 'claude-code-ai-provider'
+
+const claudeCode = createClaudeCode()
+
+const result = await generateObject({
+  model: claudeCode('sonnet'),
+  schema: z.object({
+    recipe: z.object({
+      name: z.string(),
+      ingredients: z.array(
+        z.object({
+          name: z.string(),
+          amount: z.string(),
+        }),
+      ),
+      steps: z.array(z.string()),
+      prepTime: z.string(),
+      cookTime: z.string(),
+      servings: z.number(),
+    }),
+  }),
+  prompt: 'Generate a recipe for chocolate chip cookies',
+})
+
+console.log(JSON.stringify(result.object, null, 2))
+```
+
+### Streaming Object Generation
+
+```typescript
+import { streamObject } from 'ai'
+import { z } from 'zod'
+import { createClaudeCode } from 'claude-code-ai-provider'
+
+const claudeCode = createClaudeCode()
+
+const { partialObjectStream } = await streamObject({
+  model: claudeCode('sonnet'),
+  schema: z.object({
+    story: z.object({
+      title: z.string(),
+      characters: z.array(
+        z.object({
+          name: z.string(),
+          role: z.string(),
+        }),
+      ),
+    }),
+  }),
+  prompt: 'Create a fantasy story outline',
+})
+
+for await (const partialObject of partialObjectStream) {
+  console.log(JSON.stringify(partialObject, null, 2))
 }
 ```
 
@@ -107,7 +177,7 @@ const claudeCode = createClaudeCode({
 ### Model-Specific Settings
 
 ```typescript
-const model = claudeCode('claude-3-5-sonnet-20241022', {
+const model = claudeCode('sonnet', {
   // Maximum conversation turns
   maxTurns: 5,
 
@@ -154,6 +224,13 @@ const model = claudeCode('claude-3-5-sonnet-20241022', {
 | `disallowedTools`      | `string[]` | -       | Disallowed tools for this model          |
 | `permissionPromptTool` | `string`   | -       | MCP tool for permission prompts          |
 
+## Supported Models
+
+- `sonnet` - Claude 3.5 Sonnet (latest)
+- `opus` - Claude 3 Opus
+- `haiku` - Claude 3 Haiku
+- Full model names also supported (e.g., `claude-3-5-sonnet-20241022`)
+
 ## Advanced Usage
 
 ### Multi-turn Conversations
@@ -166,7 +243,7 @@ const claudeCode = createClaudeCode()
 
 // First turn
 const { text: response1 } = await generateText({
-  model: claudeCode('claude-3-5-sonnet-20241022', {
+  model: claudeCode('sonnet', {
     sessionId: 'my-project-session',
   }),
   prompt: 'Create a new React project structure',
@@ -174,7 +251,7 @@ const { text: response1 } = await generateText({
 
 // Continue the same session
 const { text: response2 } = await generateText({
-  model: claudeCode('claude-3-5-sonnet-20241022', {
+  model: claudeCode('sonnet', {
     sessionId: 'my-project-session',
     continue: true,
   }),
@@ -185,7 +262,7 @@ const { text: response2 } = await generateText({
 ### Tool Management
 
 ```typescript
-const model = claudeCode('claude-3-5-sonnet-20241022', {
+const model = claudeCode('sonnet', {
   // Allow specific tools
   allowedTools: [
     'Read',
@@ -214,6 +291,25 @@ const claudeCode = createClaudeCode({
 })
 ```
 
+## Examples
+
+The `examples/` directory contains complete working examples:
+
+- **`simple-cli.js`** - Basic text generation
+- **`streaming-cli.js`** - Streaming responses
+- **`generate-object-basic.js`** - Simple structured output (recipe)
+- **`generate-object-complex.js`** - Complex nested schemas (project config)
+- **`generate-object-streaming.js`** - Story generation with complex structure
+
+Run examples:
+
+```bash
+cd examples
+node simple-cli.js "Write a hello world function"
+node streaming-cli.js "Explain async/await"
+node generate-object-basic.js
+```
+
 ## Error Handling
 
 ```typescript
@@ -224,7 +320,7 @@ const claudeCode = createClaudeCode()
 
 try {
   const { text } = await generateText({
-    model: claudeCode('claude-3-5-sonnet-20241022'),
+    model: claudeCode('sonnet'),
     prompt: 'Write some code',
   })
   console.log(text)
@@ -240,6 +336,13 @@ try {
 }
 ```
 
+### Error Types
+
+- `timeout_error` - Request exceeded timeout limit
+- `process_error` - Claude Code execution failed
+- `parsing_error` - Failed to parse response
+- `invalid_response` - Invalid response format
+
 ## Development
 
 ### Building
@@ -254,11 +357,24 @@ pnpm build
 pnpm test
 ```
 
-### Linting
+### Linting & Formatting
 
 ```bash
-pnpm lint
-pnpm format
+pnpm lint       # Run Biome linter
+pnpm format     # Check formatting
+pnpm format:fix # Fix formatting
+```
+
+## Architecture
+
+This provider is built on top of the official `@anthropic-ai/claude-code` TypeScript SDK:
+
+```
+claude-code-ai-provider
+├── ClaudeCodeLanguageModel (Vercel AI SDK interface)
+├── ClaudeCodeSDK (Official SDK wrapper)
+├── MessageConverter (SDK ↔ AI SDK conversion)
+└── StreamConverter (Streaming support)
 ```
 
 ## Contributing
@@ -273,4 +389,5 @@ MIT License - see LICENSE file for details.
 
 - [Vercel AI SDK](https://github.com/vercel/ai) - The AI SDK this provider integrates with
 - [Claude Code](https://claude.ai/code) - The Claude Code CLI tool
+- [@anthropic-ai/claude-code](https://www.npmjs.com/package/@anthropic-ai/claude-code) - Official TypeScript SDK
 - [Anthropic](https://anthropic.com) - The company behind Claude

@@ -7,7 +7,7 @@ import type {
 } from '@ai-sdk/provider'
 import { generateId } from '@ai-sdk/provider-utils'
 import { createClaudeCodeError, isClaudeCodeError } from './claude-code-error'
-import { ClaudeCodeProcess } from './claude-code-process'
+import { ClaudeCodeSDK } from './claude-code-sdk'
 import type {
   ClaudeCodeModelId,
   ClaudeCodeSettings,
@@ -74,17 +74,17 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
       // Prepare process options
       const processOptions = this.buildProcessOptions(claudeCodePrompt, options)
 
-      // Execute Claude Code
-      const process = new ClaudeCodeProcess(processOptions)
+      // Execute Claude Code using official SDK
+      const sdk = new ClaudeCodeSDK(processOptions)
 
       // Handle abort signal
       if (abortSignal) {
         abortSignal.addEventListener('abort', () => {
-          process.kill()
+          sdk.kill()
         })
       }
 
-      const result = await process.execute()
+      const result = await sdk.execute()
 
       if (!result.success) {
         throw createClaudeCodeError(
@@ -218,17 +218,17 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
       // Force streaming output
       Object.assign(processOptions, { outputFormat: 'stream-json' })
 
-      // Execute Claude Code
-      const process = new ClaudeCodeProcess(processOptions)
+      // Execute Claude Code using official SDK
+      const sdk = new ClaudeCodeSDK(processOptions)
 
       // Handle abort signal
       if (abortSignal) {
         abortSignal.addEventListener('abort', () => {
-          process.kill()
+          sdk.kill()
         })
       }
 
-      const streamGenerator = await process.executeStreaming()
+      const streamGenerator = sdk.executeStreaming()
 
       // Transform Claude Code stream to LanguageModelV1StreamPart
       const self = this

@@ -15,8 +15,8 @@ export type {
 export { ClaudeCodeLanguageModel } from './claude-code-language-model'
 export type { ClaudeCodeConfig } from './claude-code-language-model'
 
-// Process management
-export { ClaudeCodeProcess } from './claude-code-process'
+// SDK management
+export { ClaudeCodeSDK } from './claude-code-sdk'
 export type {
   ClaudeCodeProcessOptions,
   ClaudeCodeProcessResult,

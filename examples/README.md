@@ -5,6 +5,7 @@ Simple CLI examples showing how to use the Claude Code AI Provider.
 ## Setup
 
 1. Build the main package:
+
    ```bash
    cd ..
    pnpm build

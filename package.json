@@ -27,7 +27,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "lint": "biome check",
+    "lint": "biome lint .",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "test": "vitest run",
@@ -41,7 +41,8 @@
   },
   "dependencies": {
     "@ai-sdk/provider": "^1.0.7",
-    "@ai-sdk/provider-utils": "^2.1.6"
+    "@ai-sdk/provider-utils": "^2.1.6",
+    "@anthropic-ai/claude-code": "^1.0.22"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
