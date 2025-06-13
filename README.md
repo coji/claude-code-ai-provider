@@ -309,14 +309,14 @@ The `examples/` directory contains complete TypeScript examples:
 
 ### Text Generation
 
-- **`simple-cli.ts`** - Basic text generation with configuration
-- **`streaming-cli.ts`** - Real-time streaming responses
+- **`generate-text.ts`** - Basic text generation with configuration
+- **`stream-text.ts`** - Real-time streaming responses
 
 ### Structured Output
 
-- **`generate-object-basic.ts`** - Simple structured output (recipe)
+- **`generate-object.ts`** - Simple structured output (recipe)
 - **`generate-object-complex.ts`** - Complex nested schemas (project config)
-- **`generate-object-streaming.ts`** - Streaming object generation
+- **`stream-object.ts`** - Streaming object generation
 
 Run examples:
 
@@ -325,9 +325,9 @@ cd examples
 pnpm install
 
 # Run TypeScript examples directly
-pnpm simple "Write a hello world function"
-pnpm streaming "Explain async/await"
-pnpm generate-basic
+pnpm generate "Write a hello world function"
+pnpm stream "Explain async/await"
+pnpm generate-object
 ```
 
 ## Error Handling

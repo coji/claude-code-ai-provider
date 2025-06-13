@@ -12,10 +12,10 @@
     "@types/node": "^22.13.1"
   },
   "scripts": {
-    "simple": "npx tsx simple-cli.ts",
-    "streaming": "npx tsx streaming-cli.ts",
-    "generate-basic": "npx tsx generate-object-basic.ts",
+    "generate": "npx tsx generate-text.ts",
+    "stream": "npx tsx stream-text.ts",
+    "generate-object": "npx tsx generate-object.ts",
     "generate-complex": "npx tsx generate-object-complex.ts",
-    "generate-streaming": "npx tsx generate-object-streaming.ts"
+    "stream-object": "npx tsx stream-object.ts"
   }
 }
