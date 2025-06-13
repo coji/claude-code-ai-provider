@@ -27,7 +27,14 @@ export interface ClaudeCodeError {
  */
 export const ClaudeCodeErrorSchema = z.object({
   error: z.object({
-    type: z.string(),
+    type: z.enum([
+      'process_error',
+      'timeout_error',
+      'parsing_error',
+      'session_error',
+      'permission_error',
+      'invalid_response',
+    ]),
     message: z.string(),
     code: z.string().optional(),
     details: z.unknown().optional(),

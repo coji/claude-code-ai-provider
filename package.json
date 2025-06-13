@@ -24,8 +24,19 @@
     "ai-sdk",
     "cli"
   ],
-  "author": "coji",
+  "author": {
+    "name": "coji",
+    "url": "https://github.com/coji"
+  },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coji/claude-code-ai-provider.git"
+  },
+  "homepage": "https://github.com/coji/claude-code-ai-provider#readme",
+  "bugs": {
+    "url": "https://github.com/coji/claude-code-ai-provider/issues"
+  },
   "packageManager": "pnpm@10.11.0",
   "engines": {
     "node": ">=18.0.0"
