@@ -4,10 +4,14 @@
   "private": true,
   "dependencies": {
     "@anthropic-ai/claude-code": "1.0.22",
-    "ai": "^4.0.0"
+    "ai": "^4.0.0",
+    "zod": "^3.24.1"
   },
   "scripts": {
     "simple": "node simple-cli.js",
-    "streaming": "node streaming-cli.js"
+    "streaming": "node streaming-cli.js",
+    "generate-basic": "node generate-object-basic.js",
+    "generate-complex": "node generate-object-complex.js",
+    "generate-streaming": "node generate-object-streaming.js"
   }
 }
