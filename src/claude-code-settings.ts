@@ -5,13 +5,7 @@
 /**
  * Available Claude Code models
  */
-export type ClaudeCodeModelId =
-  | 'claude-3-5-sonnet-20241022'
-  | 'claude-3-5-haiku-20241022'
-  | 'claude-3-opus-20240229'
-  | 'claude-3-sonnet-20240229'
-  | 'claude-3-haiku-20240307'
-  | string // Allow custom model IDs
+export type ClaudeCodeModelId = 'claude-code' | string // Allow custom model IDs
 
 /**
  * Settings for Claude Code chat functionality
