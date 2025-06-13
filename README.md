@@ -53,7 +53,7 @@ import { generateText } from 'ai'
 const claudeCode = createClaudeCode()
 
 const { text } = await generateText({
-  model: claudeCode('sonnet'), // or 'opus', 'haiku'
+  model: claudeCode('sonnet'), // or 'opus', 'haiku', or specific version like 'claude-sonnet-4-20250514'
   prompt: 'Write a function to calculate fibonacci numbers',
 })
 
@@ -226,10 +226,22 @@ const model = claudeCode('sonnet', {
 
 ## Supported Models
 
-- `sonnet` - Claude 3.5 Sonnet (latest)
-- `opus` - Claude 3 Opus
-- `haiku` - Claude 3 Haiku
-- Full model names also supported (e.g., `claude-3-5-sonnet-20241022`)
+### Model Aliases (Latest Versions)
+
+- `sonnet` - Claude Sonnet 4 (latest: `claude-sonnet-4-20250514`)
+- `opus` - Claude Opus 4 (latest: `claude-opus-4-20250514`)
+- `haiku` - Claude 3.5 Haiku (latest: `claude-3-5-haiku-20241022`)
+
+### Specific Model Versions
+
+- `claude-sonnet-4-20250514` - Claude Sonnet 4 (May 2025)
+- `claude-opus-4-20250514` - Claude Opus 4 (May 2025)
+- `claude-3-5-sonnet-20241022` - Claude 3.5 Sonnet (October 2024)
+- `claude-3-5-haiku-20241022` - Claude 3.5 Haiku (October 2024)
+
+### Custom Models
+
+Any string can be used as a model ID for custom or future models.
 
 ## Advanced Usage
 

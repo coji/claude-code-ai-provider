@@ -3,9 +3,29 @@
  */
 
 /**
- * Available Claude Code models
+ * Claude Code model aliases that map to the latest versions
  */
-export type ClaudeCodeModelId = 'claude-code' | string // Allow custom model IDs
+export type ClaudeCodeModelAlias =
+  | 'sonnet' // Maps to claude-sonnet-4-20250514 (latest)
+  | 'opus' // Maps to claude-opus-4-20250514 (latest)
+  | 'haiku' // Maps to claude-3-5-haiku-20241022 (latest)
+
+/**
+ * Specific Claude Code model names with version identifiers
+ */
+export type ClaudeCodeModelName =
+  | 'claude-sonnet-4-20250514'
+  | 'claude-opus-4-20250514'
+  | 'claude-3-5-sonnet-20241022'
+  | 'claude-3-5-haiku-20241022'
+
+/**
+ * Available Claude Code models - supports aliases, specific names, and custom models
+ */
+export type ClaudeCodeModelId =
+  | ClaudeCodeModelAlias
+  | ClaudeCodeModelName
+  | string // Allow custom model IDs
 
 /**
  * Settings for Claude Code chat functionality

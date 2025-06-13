@@ -7,7 +7,9 @@ export type {
 
 // Settings and types
 export type {
+  ClaudeCodeModelAlias,
   ClaudeCodeModelId,
+  ClaudeCodeModelName,
   ClaudeCodeSettings,
 } from './claude-code-settings'
 
