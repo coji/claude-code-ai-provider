@@ -296,10 +296,12 @@ const claudeCode = createClaudeCode({
 The `examples/` directory contains complete TypeScript examples:
 
 ### Text Generation
+
 - **`simple-cli.ts`** - Basic text generation with configuration
 - **`streaming-cli.ts`** - Real-time streaming responses
 
-### Structured Output  
+### Structured Output
+
 - **`generate-object-basic.ts`** - Simple structured output (recipe)
 - **`generate-object-complex.ts`** - Complex nested schemas (project config)
 - **`generate-object-streaming.ts`** - Streaming object generation

@@ -138,7 +138,7 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
 
           if (messageObj.content && Array.isArray(messageObj.content)) {
             const textContent = messageObj.content.find(
-              (c: any) => c.type === 'text',
+              (c: { type?: string; text?: string }) => c.type === 'text',
             )
             if (textContent?.text) {
               text = textContent.text
