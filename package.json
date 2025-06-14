@@ -1,6 +1,6 @@
 {
   "name": "claude-code-ai-provider",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Vercel AI Provider for Claude Code CLI integration",
   "type": "module",
   "main": "./dist/index.js",
