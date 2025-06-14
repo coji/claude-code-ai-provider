@@ -124,7 +124,7 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
 
       // Extract text content from Claude Code response
       let text = ''
-      
+
       if (lastAssistantMessage?.message) {
         try {
           // Parse message if it's a string
@@ -137,22 +137,31 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
           if (messageObj.content && Array.isArray(messageObj.content)) {
             // Extract all text content from the array
             const textContents = messageObj.content
-              .filter((c: unknown): c is { type: string; text: string } => 
-                typeof c === 'object' && c !== null && 
-                'type' in c && 'text' in c && 
-                c.type === 'text' && typeof c.text === 'string'
+              .filter(
+                (c: unknown): c is { type: string; text: string } =>
+                  typeof c === 'object' &&
+                  c !== null &&
+                  'type' in c &&
+                  'text' in c &&
+                  c.type === 'text' &&
+                  typeof c.text === 'string',
               )
               .map((c: { type: string; text: string }) => c.text)
               .filter(Boolean)
-            
+
             text = textContents.join('')
-          } 
+          }
           // Handle simple text message
           else if (typeof messageObj === 'string') {
             text = messageObj
           }
           // Handle direct text property
-          else if (messageObj && typeof messageObj === 'object' && 'text' in messageObj && typeof messageObj.text === 'string') {
+          else if (
+            messageObj &&
+            typeof messageObj === 'object' &&
+            'text' in messageObj &&
+            typeof messageObj.text === 'string'
+          ) {
             text = messageObj.text
           }
           // Handle content as string (fallback)
@@ -166,7 +175,7 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
           }
         }
       }
-      
+
       // Final fallback to result
       if (!text && finalMessage.result) {
         text = finalMessage.result
@@ -314,22 +323,31 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
               if (data.type === 'assistant') {
                 // Extract text content from the assistant message
                 let extractedText = ''
-                
+
                 try {
                   const messageObj = data.message
-                  
+
                   // Handle Anthropic message format with content array
-                  if (messageObj && typeof messageObj === 'object' && messageObj.content && Array.isArray(messageObj.content)) {
+                  if (
+                    messageObj &&
+                    typeof messageObj === 'object' &&
+                    messageObj.content &&
+                    Array.isArray(messageObj.content)
+                  ) {
                     // Extract all text content from the array
                     const textContents = messageObj.content
-                      .filter((c: unknown): c is { type: string; text: string } => 
-                        typeof c === 'object' && c !== null && 
-                        'type' in c && 'text' in c && 
-                        c.type === 'text' && typeof c.text === 'string'
+                      .filter(
+                        (c: unknown): c is { type: string; text: string } =>
+                          typeof c === 'object' &&
+                          c !== null &&
+                          'type' in c &&
+                          'text' in c &&
+                          c.type === 'text' &&
+                          typeof c.text === 'string',
                       )
                       .map((c: { type: string; text: string }) => c.text)
                       .filter(Boolean)
-                    
+
                     extractedText = textContents.join('')
                   }
                   // Handle string message
@@ -337,7 +355,12 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
                     extractedText = messageObj
                   }
                   // Handle direct text property
-                  else if (messageObj && typeof messageObj === 'object' && 'text' in messageObj && typeof messageObj.text === 'string') {
+                  else if (
+                    messageObj &&
+                    typeof messageObj === 'object' &&
+                    'text' in messageObj &&
+                    typeof messageObj.text === 'string'
+                  ) {
                     extractedText = messageObj.text
                   }
                 } catch (e) {
@@ -346,7 +369,7 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
                     extractedText = data.message
                   }
                 }
-                
+
                 // Send text delta if we have new content
                 if (extractedText && extractedText !== currentText) {
                   const delta = extractedText.slice(currentText.length)

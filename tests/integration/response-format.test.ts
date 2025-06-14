@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
 import { generateText, streamText } from 'ai'
+import { describe, expect, it } from 'vitest'
 import { createClaudeCode } from '../../src/index.js'
 
 const claudeCode = createClaudeCode({
@@ -22,7 +22,7 @@ describe('Response Format Integration Tests', () => {
     expect(result).toHaveProperty('finishReason')
     expect(result).toHaveProperty('usage')
     expect(result).toHaveProperty('response')
-    
+
     // finishReason should be 'stop'
     expect(result.finishReason).toBe('stop')
   }, 60000)
