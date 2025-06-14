@@ -50,6 +50,8 @@
     "test": "vitest run",
     "test:ci": "vitest --run",
     "test:watch": "vitest",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:integration:watch": "vitest --config vitest.integration.config.ts",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
