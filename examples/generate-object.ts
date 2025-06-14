@@ -2,11 +2,9 @@
 
 import { generateObject } from 'ai'
 import { z } from 'zod'
-import { createClaudeCode } from '../dist/index.js'
+import { claudeCode } from '../dist/index.js'
 
-const claudeCode = createClaudeCode()
-
-async function main(): Promise<void> {
+async function main() {
   try {
     console.log('🤖 Generating structured object with Claude Code...\n')
 
