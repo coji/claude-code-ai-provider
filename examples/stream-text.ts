@@ -7,7 +7,7 @@ const claudeCode = createClaudeCode({
   allowedTools: ['Read', 'Write', 'Bash', 'Edit'],
 })
 
-async function main(): Promise<void> {
+async function main() {
   const prompt = process.argv[2] || 'Write a simple Python hello world script'
 
   try {

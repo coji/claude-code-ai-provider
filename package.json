@@ -1,6 +1,6 @@
 {
   "name": "claude-code-ai-provider",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Vercel AI Provider for Claude Code CLI integration",
   "type": "module",
   "main": "./dist/index.js",
@@ -50,18 +50,21 @@
     "test": "vitest run",
     "test:ci": "vitest --run",
     "test:watch": "vitest",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:integration:watch": "vitest --config vitest.integration.config.ts",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
   "peerDependencies": {
+    "@anthropic-ai/claude-code": "^1.0.0",
     "zod": "^3.24.1"
   },
   "dependencies": {
     "@ai-sdk/provider": "^1.0.7",
-    "@ai-sdk/provider-utils": "^2.1.6",
-    "@anthropic-ai/claude-code": "^1.0.22"
+    "@ai-sdk/provider-utils": "^2.1.6"
   },
   "devDependencies": {
+    "@anthropic-ai/claude-code": "^1.0.24",
     "@biomejs/biome": "1.9.4",
     "@types/node": "^22.13.1",
     "@vitest/ui": "^3.0.5",
@@ -69,6 +72,7 @@
     "prettier": "3.5.3",
     "prettier-plugin-organize-imports": "4.1.0",
     "tsup": "8.5.0",
+    "tsx": "4.20.3",
     "typescript": "5.8.3",
     "vitest": "^3.0.5",
     "zod": "^3.24.1"

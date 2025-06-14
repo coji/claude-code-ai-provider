@@ -122,31 +122,63 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
       const lastAssistantMessage =
         assistantMessages[assistantMessages.length - 1]
 
-      let text = finalMessage.result || ''
-      if (
-        lastAssistantMessage &&
-        typeof lastAssistantMessage.message === 'string'
-      ) {
-        text = lastAssistantMessage.message
-      } else if (lastAssistantMessage?.message) {
-        // Handle Claude Code message format (content array)
+      // Extract text content from Claude Code response
+      let text = ''
+
+      if (lastAssistantMessage?.message) {
         try {
+          // Parse message if it's a string
           const messageObj =
             typeof lastAssistantMessage.message === 'string'
               ? JSON.parse(lastAssistantMessage.message)
               : lastAssistantMessage.message
 
+          // Handle Anthropic message format with content array
           if (messageObj.content && Array.isArray(messageObj.content)) {
-            const textContent = messageObj.content.find(
-              (c: { type?: string; text?: string }) => c.type === 'text',
-            )
-            if (textContent?.text) {
-              text = textContent.text
-            }
+            // Extract all text content from the array
+            const textContents = messageObj.content
+              .filter(
+                (c: unknown): c is { type: string; text: string } =>
+                  typeof c === 'object' &&
+                  c !== null &&
+                  'type' in c &&
+                  'text' in c &&
+                  c.type === 'text' &&
+                  typeof c.text === 'string',
+              )
+              .map((c: { type: string; text: string }) => c.text)
+              .filter(Boolean)
+
+            text = textContents.join('')
+          }
+          // Handle simple text message
+          else if (typeof messageObj === 'string') {
+            text = messageObj
+          }
+          // Handle direct text property
+          else if (
+            messageObj &&
+            typeof messageObj === 'object' &&
+            'text' in messageObj &&
+            typeof messageObj.text === 'string'
+          ) {
+            text = messageObj.text
+          }
+          // Handle content as string (fallback)
+          else if (typeof messageObj.content === 'string') {
+            text = messageObj.content
           }
         } catch (e) {
-          // Fallback to result.result or empty string
+          // If parsing fails, try to use message as-is
+          if (typeof lastAssistantMessage.message === 'string') {
+            text = lastAssistantMessage.message
+          }
         }
+      }
+
+      // Final fallback to result
+      if (!text && finalMessage.result) {
+        text = finalMessage.result
       }
       const finishReason = this.mapFinishReason('success')
 
@@ -289,17 +321,64 @@ export class ClaudeCodeLanguageModel implements LanguageModelV1 {
 
               // Handle assistant messages (text deltas)
               if (data.type === 'assistant') {
-                // For streaming, we'll send the entire message as a text delta
-                // In a more sophisticated implementation, you might parse incremental updates
-                const messageText = JSON.stringify(data.message)
-                if (messageText !== currentText) {
-                  const delta = messageText.slice(currentText.length)
+                // Extract text content from the assistant message
+                let extractedText = ''
+
+                try {
+                  const messageObj = data.message
+
+                  // Handle Anthropic message format with content array
+                  if (
+                    messageObj &&
+                    typeof messageObj === 'object' &&
+                    messageObj.content &&
+                    Array.isArray(messageObj.content)
+                  ) {
+                    // Extract all text content from the array
+                    const textContents = messageObj.content
+                      .filter(
+                        (c: unknown): c is { type: string; text: string } =>
+                          typeof c === 'object' &&
+                          c !== null &&
+                          'type' in c &&
+                          'text' in c &&
+                          c.type === 'text' &&
+                          typeof c.text === 'string',
+                      )
+                      .map((c: { type: string; text: string }) => c.text)
+                      .filter(Boolean)
+
+                    extractedText = textContents.join('')
+                  }
+                  // Handle string message
+                  else if (typeof messageObj === 'string') {
+                    extractedText = messageObj
+                  }
+                  // Handle direct text property
+                  else if (
+                    messageObj &&
+                    typeof messageObj === 'object' &&
+                    'text' in messageObj &&
+                    typeof messageObj.text === 'string'
+                  ) {
+                    extractedText = messageObj.text
+                  }
+                } catch (e) {
+                  // Fallback to string representation
+                  if (typeof data.message === 'string') {
+                    extractedText = data.message
+                  }
+                }
+
+                // Send text delta if we have new content
+                if (extractedText && extractedText !== currentText) {
+                  const delta = extractedText.slice(currentText.length)
                   if (delta) {
                     controller.enqueue({
                       type: 'text-delta',
                       textDelta: delta,
                     })
-                    currentText = messageText
+                    currentText = extractedText
                   }
                 }
               }

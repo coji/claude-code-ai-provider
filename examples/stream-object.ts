@@ -2,11 +2,9 @@
 
 import { streamObject } from 'ai'
 import { z } from 'zod'
-import { createClaudeCode } from '../dist/index.js'
+import { claudeCode } from '../dist/index.js'
 
-const claudeCode = createClaudeCode()
-
-async function main(): Promise<void> {
+async function main() {
   try {
     console.log('🤖 Streaming story outline generation with Claude Code...\n')
 
