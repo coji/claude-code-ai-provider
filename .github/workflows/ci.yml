@@ -79,3 +79,13 @@ jobs:
         run: |
           cd examples
           npx tsc --noEmit --skipLibCheck *.ts
+
+  ci-status:
+    name: ✅ CI Status Check # ← **固定名**：Ruleset にはコレだけ登録
+    runs-on: ubuntu-latest
+    needs:
+      - test
+      - test-examples
+    steps:
+      - name: All prerequisites passed
+        run: echo "Matrix & example tests succeeded 🎉"
