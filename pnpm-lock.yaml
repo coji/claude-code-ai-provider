@@ -14,10 +14,10 @@ importers:
       '@ai-sdk/provider-utils':
         specifier: ^2.1.6
         version: 2.2.8(zod@3.25.64)
-      '@anthropic-ai/claude-code':
-        specifier: ^1.0.22
-        version: 1.0.22
     devDependencies:
+      '@anthropic-ai/claude-code':
+        specifier: ^1.0.24
+        version: 1.0.24
       '@biomejs/biome':
         specifier: 1.9.4
         version: 1.9.4
@@ -80,8 +80,8 @@ packages:
     peerDependencies:
       zod: ^3.23.8
 
-  '@anthropic-ai/claude-code@1.0.22':
-    resolution: {integrity: sha512-vqfDHq4KNtUzUiwdsls8+2aTrC1Rn96iH+yOyCrBjHjJwojzU6pt3MOAMkJHMeErKeGqve+I7HM6mFw0OgZgqw==}
+  '@anthropic-ai/claude-code@1.0.24':
+    resolution: {integrity: sha512-4S6ly2297ngNlto7IFZeEicS9u0yRDhocOzndWFovGBb+iUoEPKdZa/rhVk/tcyCADL6S+mMkiGQOlqFDrN3JQ==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -1158,7 +1158,7 @@ snapshots:
       zod: 3.25.64
       zod-to-json-schema: 3.24.5(zod@3.25.64)
 
-  '@anthropic-ai/claude-code@1.0.22':
+  '@anthropic-ai/claude-code@1.0.24':
     optionalDependencies:
       '@img/sharp-darwin-arm64': 0.33.5
       '@img/sharp-darwin-x64': 0.33.5

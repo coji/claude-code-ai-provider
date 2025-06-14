@@ -24,6 +24,8 @@ pnpm add claude-code-ai-provider @anthropic-ai/claude-code
 yarn add claude-code-ai-provider @anthropic-ai/claude-code
 ```
 
+> **Note**: `@anthropic-ai/claude-code` is a peer dependency. This ensures you can always use the latest version of Claude Code SDK without waiting for this provider to update.
+
 ## Prerequisites
 
 - Claude Code CLI must be installed and available in your PATH
