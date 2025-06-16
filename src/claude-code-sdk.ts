@@ -301,12 +301,54 @@ export class ClaudeCodeSDK {
           // Add other system properties as needed
         } as ClaudeCodeSDKMessage
 
-      case 'assistant':
+      case 'assistant': {
+        // Extract text content from the message object
+        let textContent = ''
+        const msg = message.message
+
+        // Handle Anthropic message format with content array
+        if (
+          msg &&
+          typeof msg === 'object' &&
+          'content' in msg &&
+          Array.isArray(msg.content)
+        ) {
+          // Extract all text content from the array
+          const textContents = msg.content
+            .filter(
+              (c: unknown): c is { type: string; text: string } =>
+                typeof c === 'object' &&
+                c !== null &&
+                'type' in c &&
+                'text' in c &&
+                c.type === 'text' &&
+                typeof c.text === 'string',
+            )
+            .map((c: { type: string; text: string }) => c.text)
+            .filter(Boolean)
+
+          textContent = textContents.join('')
+        }
+        // Handle string message
+        else if (typeof msg === 'string') {
+          textContent = msg
+        }
+        // Handle direct text property
+        else if (
+          msg &&
+          typeof msg === 'object' &&
+          'text' in msg &&
+          typeof msg.text === 'string'
+        ) {
+          textContent = msg.text
+        }
+
         return {
           type: 'assistant',
-          message: message.message,
+          message: textContent,
           session_id: message.session_id,
         } as ClaudeCodeSDKMessage
+      }
 
       case 'user':
         return {
