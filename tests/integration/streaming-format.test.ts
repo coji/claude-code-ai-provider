@@ -34,12 +34,12 @@ describe('Streaming Format Integration Tests', () => {
     expect(fullText).toContain('streaming')
     
     // No chunk should contain object-like structures
-    chunks.forEach(chunk => {
+    for (const chunk of chunks) {
       expect(chunk).not.toContain('[object Object]')
       expect(chunk).not.toContain('"type":')
       expect(chunk).not.toContain('"text":')
       expect(chunk).not.toContain('"content":')
-    })
+    }
   }, 60000)
 
   it('should handle multi-line streaming responses as plain text', async () => {
