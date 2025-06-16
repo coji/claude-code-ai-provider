@@ -5,7 +5,6 @@
 
 // Anthropic SDK types - using generic Record for now
 // In a real implementation, you would import the actual types from the SDK
-type Message = Record<string, unknown>
 type MessageParam = Record<string, unknown>
 
 /**
@@ -15,7 +14,7 @@ export type ClaudeCodeSDKMessage =
   // Assistant message
   | {
       type: 'assistant'
-      message: Message
+      message: string
       session_id: string
     }
   // User message
