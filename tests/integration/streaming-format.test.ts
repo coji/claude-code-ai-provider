@@ -10,7 +10,7 @@ describe('Streaming Format Integration Tests', () => {
   it('should stream plain text chunks, not objects', async () => {
     const chunks: string[] = []
     const chunkTypes: string[] = []
-    
+
     const result = streamText({
       model: claudeCode('sonnet'),
       prompt: 'Say "Hello, streaming!" and nothing else.',
@@ -22,17 +22,17 @@ describe('Streaming Format Integration Tests', () => {
     }
 
     // All chunks should be strings
-    expect(chunkTypes.every(type => type === 'string')).toBe(true)
-    
+    expect(chunkTypes.every((type) => type === 'string')).toBe(true)
+
     // Should have received actual text chunks
     expect(chunks.length).toBeGreaterThan(0)
-    
+
     // Full text should be a proper string
     const fullText = chunks.join('')
     expect(typeof fullText).toBe('string')
     expect(fullText).toContain('Hello')
     expect(fullText).toContain('streaming')
-    
+
     // No chunk should contain object-like structures
     for (const chunk of chunks) {
       expect(chunk).not.toContain('[object Object]')
@@ -44,7 +44,7 @@ describe('Streaming Format Integration Tests', () => {
 
   it('should handle multi-line streaming responses as plain text', async () => {
     const chunks: string[] = []
-    
+
     const result = streamText({
       model: claudeCode('sonnet'),
       prompt: 'Write exactly these two lines:\nLine 1: Hello\nLine 2: World',
@@ -59,7 +59,7 @@ describe('Streaming Format Integration Tests', () => {
     const fullText = chunks.join('')
     expect(fullText).toContain('Hello')
     expect(fullText).toContain('World')
-    
+
     // Ensure no JSON structures leaked through
     expect(fullText).not.toMatch(/\{"type":/i)
     expect(fullText).not.toMatch(/\{"content":/i)
@@ -68,7 +68,7 @@ describe('Streaming Format Integration Tests', () => {
   it('should stream text incrementally without object wrappers', async () => {
     let previousLength = 0
     const incrementalText: string[] = []
-    
+
     const result = streamText({
       model: claudeCode('sonnet'),
       prompt: 'Count from 1 to 3 like this: "1, 2, 3"',
@@ -77,11 +77,11 @@ describe('Streaming Format Integration Tests', () => {
     for await (const chunk of result.textStream) {
       // Each chunk should be a plain string
       expect(typeof chunk).toBe('string')
-      
+
       // Track incremental building of text
       incrementalText.push(chunk)
       const currentText = incrementalText.join('')
-      
+
       // Text should be building incrementally
       expect(currentText.length).toBeGreaterThanOrEqual(previousLength)
       previousLength = currentText.length
@@ -103,10 +103,10 @@ describe('Streaming Format Integration Tests', () => {
     }
 
     const fullText = chunks.join('')
-    
+
     // Should contain the expected text
     expect(fullText).toContain('No objects here!')
-    
+
     // Should NOT contain any signs of the internal message structure
     expect(fullText).not.toContain('"role":"assistant"')
     expect(fullText).not.toContain('"content":[')
@@ -114,7 +114,7 @@ describe('Streaming Format Integration Tests', () => {
     expect(fullText).not.toContain('"text":')
     expect(fullText).not.toContain('"message":')
     expect(fullText).not.toContain('[object Object]')
-    
+
     // Should not contain any JSON-like structures
     expect(fullText).not.toMatch(/\{.*"type".*:.*"text".*\}/s)
   }, 60000)
